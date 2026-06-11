@@ -5,364 +5,381 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Game Scoreboard — Est. 2026</title>
 <style>
-  
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,500&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&display=swap');
 
-  :root{
-    --paper:#f3ead8;
-    --paper-dark:#e8dcc3;
-    --ink:#27332c;
-    --forest:#2c4a3b;
-    --forest-deep:#1d342a;
-    --terra:#bd5b3d;
-    --gold:#bb9347;
-    --line:#cdbf a3;
-    --line:#cabf a0;
-    --line:#c6b893;
-  }
+  :root{
+    --paper:#f3ead8;
+    --paper-dark:#e8dcc3;
+    --ink:#27332c;
+    --forest:#2c4a3b;
+    --forest-deep:#1d342a;
+    --terra:#bd5b3d;
+    --gold:#bb9347;
+    --line:#cdbf a3;
+    --line:#cabf a0;
+    --line:#c6b893;
+  }
 
-  *{box-sizing:border-box;margin:0;padding:0;}
+  *{box-sizing:border-box;margin:0;padding:0;}
 
-  body{
-    font-family:'Spectral',Georgia,serif;
-    color:var(--ink);
-    background:
-      radial-gradient(circle at 18% 12%, rgba(189,91,61,.06), transparent 45%),
-      radial-gradient(circle at 85% 80%, rgba(44,74,59,.07), transparent 40%),
-      var(--paper);
-    min-height:100vh;
-    padding:32px 18px 80px;
-    line-height:1.5;
-  }
-  /* subtle paper grain */
-  body::before{
-    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.5;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.045'/%3E%3C/svg%3E");
-  }
+  body{
+    font-family:'Spectral',Georgia,serif;
+    color:var(--ink);
+    background:
+      radial-gradient(circle at 18% 12%, rgba(189,91,61,.06), transparent 45%),
+      radial-gradient(circle at 85% 80%, rgba(44,74,59,.07), transparent 40%),
+      var(--paper);
+    min-height:100vh;
+    padding:32px 18px 80px;
+    line-height:1.5;
+  }
+  /* subtle paper grain */
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.5;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.045'/%3E%3C/svg%3E");
+  }
 
-  .wrap{max-width:760px;margin:0 auto;position:relative;z-index:1;}
+  .wrap{max-width:760px;margin:0 auto;position:relative;z-index:1;}
 
-  header.masthead{
-    text-align:center;
-    border-bottom:3px double var(--forest);
-    padding-bottom:18px;margin-bottom:6px;
-  }
-  .eyebrow{
-    font-family:'Spectral';font-style:italic;letter-spacing:.18em;
-    text-transform:uppercase;font-size:11px;color:var(--terra);
-    display:flex;align-items:center;justify-content:center;gap:12px;
-  }
-  .eyebrow::before,.eyebrow::after{content:"";height:1px;width:46px;background:var(--gold);}
-  h1{
-    font-family:'Fraunces';font-weight:900;font-size:clamp(40px,9vw,68px);
-    color:var(--forest-deep);line-height:.95;margin:6px 0 4px;letter-spacing:-.01em;
-  }
-  .subtitle{font-style:italic;font-size:15px;color:#5e6b5e;}
+  header.masthead{
+    text-align:center;
+    border-bottom:3px double var(--forest);
+    padding-bottom:18px;margin-bottom:6px;
+  }
+  .eyebrow{
+    font-family:'Spectral';font-style:italic;letter-spacing:.18em;
+    text-transform:uppercase;font-size:11px;color:var(--terra);
+    display:flex;align-items:center;justify-content:center;gap:12px;
+  }
+  .eyebrow::before,.eyebrow::after{content:"";height:1px;width:46px;background:var(--gold);}
+  h1{
+    font-family:'Fraunces';font-weight:900;font-size:clamp(40px,9vw,68px);
+    color:var(--forest-deep);line-height:.95;margin:6px 0 4px;letter-spacing:-.01em;
+  }
+  .subtitle{font-style:italic;font-size:15px;color:#5e6b5e;}
 
-  /* Versus banner */
-  .versus{
-    display:grid;grid-template-columns:1fr auto 1fr;align-items:center;
-    gap:10px;margin:26px 0 30px;
-  }
-  .player-card{
-    text-align:center;padding:16px 10px;border:1px solid var(--line);
-    background:rgba(255,255,255,.35);position:relative;
-  }
-  .player-card .crest{font-size:22px;margin-bottom:2px;}
-  .player-name{
-    font-family:'Fraunces';font-weight:600;font-size:26px;color:var(--forest-deep);
-    background:transparent;border:none;text-align:center;width:100%;
-    border-bottom:1px dashed transparent;cursor:text;
-  }
-  .player-name:hover{border-bottom-color:var(--gold);}
-  .player-name:focus{outline:none;border-bottom-color:var(--terra);}
-  .player-tally{font-family:'Fraunces';font-weight:900;font-size:46px;line-height:1;color:var(--terra);margin-top:4px;}
-  .player-tally small{font-family:'Spectral';font-size:12px;font-weight:400;font-style:italic;color:#7a857a;display:block;}
-  .vs-mark{font-family:'Fraunces';font-style:italic;font-size:20px;color:var(--gold);transform:rotate(-8deg);}
-  .leader-flag{
-    position:absolute;top:-11px;left:50%;transform:translateX(-50%);
-    background:var(--gold);color:#fff;font-size:10px;letter-spacing:.12em;
-    text-transform:uppercase;padding:2px 10px;font-family:'Spectral';white-space:nowrap;
-  }
+  /* Versus banner */
+  .versus{
+    display:grid;grid-template-columns:1fr auto 1fr;align-items:center;
+    gap:10px;margin:26px 0 30px;
+  }
+  .player-card{
+    text-align:center;padding:16px 10px;border:1px solid var(--line);
+    background:rgba(255,255,255,.35);position:relative;
+  }
+  .player-card .crest{font-size:22px;margin-bottom:2px;}
+  .player-name{
+    font-family:'Fraunces';font-weight:600;font-size:26px;color:var(--forest-deep);
+    background:transparent;border:none;text-align:center;width:100%;
+    border-bottom:1px dashed transparent;cursor:text;
+  }
+  .player-name:hover{border-bottom-color:var(--gold);}
+  .player-name:focus{outline:none;border-bottom-color:var(--terra);}
+  .player-tally{font-family:'Fraunces';font-weight:900;font-size:46px;line-height:1;color:var(--terra);margin-top:4px;}
+  .player-tally small{font-family:'Spectral';font-size:12px;font-weight:400;font-style:italic;color:#7a857a;display:block;}
+  .vs-mark{font-family:'Fraunces';font-style:italic;font-size:20px;color:var(--gold);transform:rotate(-8deg);}
+  .leader-flag{
+    position:absolute;top:-11px;left:50%;transform:translateX(-50%);
+    background:var(--gold);color:#fff;font-size:10px;letter-spacing:.12em;
+    text-transform:uppercase;padding:2px 10px;font-family:'Spectral';white-space:nowrap;
+  }
 
-  /* Add game */
-  .addbar{display:flex;gap:8px;margin-bottom:26px;}
-  .addbar input{
-    flex:1;font-family:'Spectral';font-size:16px;padding:12px 14px;
-    background:rgba(255,255,255,.5);border:1px solid var(--line);color:var(--ink);
-  }
-  .addbar input:focus{outline:none;border-color:var(--forest);background:#fff;}
-  button{font-family:'Spectral';cursor:pointer;border:none;}
-  .btn-add{
-    background:var(--forest);color:var(--paper);padding:0 22px;font-size:15px;
-    letter-spacing:.04em;transition:background .2s;
-  }
-  .btn-add:hover{background:var(--forest-deep);}
+  /* Add game */
+  .addbar{display:flex;gap:8px;margin-bottom:26px;}
+  .addbar input{
+    flex:1;font-family:'Spectral';font-size:16px;padding:12px 14px;
+    background:rgba(255,255,255,.5);border:1px solid var(--line);color:var(--ink);
+  }
+  .addbar input:focus{outline:none;border-color:var(--forest);background:#fff;}
+  button{font-family:'Spectral';cursor:pointer;border:none;}
+  .btn-add{
+    background:var(--forest);color:var(--paper);padding:0 22px;font-size:15px;
+    letter-spacing:.04em;transition:background .2s;
+  }
+  .btn-add:hover{background:var(--forest-deep);}
 
-  .section-label{
-    font-family:'Spectral';font-style:italic;font-size:13px;letter-spacing:.16em;
-    text-transform:uppercase;color:var(--terra);margin:0 0 12px;
-    display:flex;align-items:center;gap:10px;
-  }
-  .section-label::after{content:"";flex:1;height:1px;background:var(--line);}
+  .section-label{
+    font-family:'Spectral';font-style:italic;font-size:13px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--terra);margin:0 0 12px;
+    display:flex;align-items:center;gap:10px;
+  }
+  .section-label::after{content:"";flex:1;height:1px;background:var(--line);}
 
-  /* Game rows */
-  .game{
-    border:1px solid var(--line);background:rgba(255,255,255,.4);
-    padding:16px 18px;margin-bottom:12px;
-    animation:rise .4s ease both;
-  }
-  @keyframes rise{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
-  .game-top{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:12px;}
-  .game-name{font-family:'Fraunces';font-weight:600;font-size:21px;color:var(--forest-deep);}
-  .game-total{font-style:italic;font-size:12px;color:#7a857a;white-space:nowrap;}
-  .del{background:none;color:#a99;font-size:18px;line-height:1;padding:0 4px;opacity:.5;}
-  .del:hover{opacity:1;color:var(--terra);}
+  /* Game rows */
+  .game{
+    border:1px solid var(--line);background:rgba(255,255,255,.4);
+    padding:16px 18px;margin-bottom:12px;
+    animation:rise .4s ease both;
+  }
+  @keyframes rise{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+  .game-top{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:12px;}
+  .game-name{font-family:'Fraunces';font-weight:600;font-size:21px;color:var(--forest-deep);}
+  .game-total{font-style:italic;font-size:12px;color:#7a857a;white-space:nowrap;}
+  .del{background:none;color:#a99;font-size:18px;line-height:1;padding:0 4px;opacity:.5;}
+  .del:hover{opacity:1;color:var(--terra);}
 
-  /* bar */
-  .bar{height:14px;display:flex;border:1px solid var(--forest-deep);overflow:hidden;margin-bottom:12px;background:var(--paper-dark);}
-  .bar .a{background:var(--terra);transition:width .45s ease;}
-  .bar .b{background:var(--forest);transition:width .45s ease;}
+  /* bar */
+  .bar{height:14px;display:flex;border:1px solid var(--forest-deep);overflow:hidden;margin-bottom:12px;background:var(--paper-dark);}
+  .bar .a{background:var(--terra);transition:width .45s ease;}
+  .bar .b{background:var(--forest);transition:width .45s ease;}
 
-  .winbtns{display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:center;}
-  .winbtn{
-    padding:9px;font-size:14px;border:1px solid var(--line);background:rgba(255,255,255,.6);
-    color:var(--ink);transition:all .15s;display:flex;justify-content:space-between;align-items:center;gap:8px;
-  }
-  .winbtn .score{font-family:'Fraunces';font-weight:900;font-size:18px;}
-  .winbtn.a:hover{background:var(--terra);color:#fff;border-color:var(--terra);}
-  .winbtn.b:hover{background:var(--forest);color:#fff;border-color:var(--forest);}
-  .winbtn span.lbl{font-style:italic;}
+  .winbtns{display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:center;}
+  .winbtn{
+    padding:9px;font-size:14px;border:1px solid var(--line);background:rgba(255,255,255,.6);
+    color:var(--ink);transition:all .15s;display:flex;justify-content:space-between;align-items:center;gap:8px;
+  }
+  .winbtn .score{font-family:'Fraunces';font-weight:900;font-size:18px;}
+  .winbtn.a:hover{background:var(--terra);color:#fff;border-color:var(--terra);}
+  .winbtn.b:hover{background:var(--forest);color:#fff;border-color:var(--forest);}
+  .winbtn span.lbl{font-style:italic;}
 
-  .empty{text-align:center;padding:30px;color:#8a958a;font-style:italic;border:1px dashed var(--line);}
+  .empty{text-align:center;padding:30px;color:#8a958a;font-style:italic;border:1px dashed var(--line);}
 
-  /* history */
-  .history{margin-top:34px;}
-  .log{list-style:none;font-size:14px;}
-  .log li{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:7px 2px;border-bottom:1px dotted var(--line);}
-  .log .who{font-family:'Fraunces';font-weight:600;}
-  .log .meta{font-style:italic;color:#8a958a;font-size:12px;}
-  .undo{background:none;color:var(--terra);font-style:italic;font-size:12px;text-decoration:underline;opacity:.7;}
-  .undo:hover{opacity:1;}
+  /* history */
+  .history{margin-top:34px;}
+  .log{list-style:none;font-size:14px;}
+  .log li{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:7px 2px;border-bottom:1px dotted var(--line);}
+  .log .who{font-family:'Fraunces';font-weight:600;}
+  .log .meta{font-style:italic;color:#8a958a;font-size:12px;}
+  .undo{background:none;color:var(--terra);font-style:italic;font-size:12px;text-decoration:underline;opacity:.7;}
+  .undo:hover{opacity:1;}
 
-  footer{text-align:center;margin-top:40px;font-size:12px;color:#9aa39a;font-style:italic;}
-  .reset{background:none;color:#b99;text-decoration:underline;font-style:italic;font-size:12px;margin-top:6px;}
-  .reset:hover{color:var(--terra);}
+  footer{text-align:center;margin-top:40px;font-size:12px;color:#9aa39a;font-style:italic;}
+  .reset{background:none;color:#b99;text-decoration:underline;font-style:italic;font-size:12px;margin-top:6px;}
+  .reset:hover{color:var(--terra);}
 </style>
 </head>
 <body>
 <div class="wrap" id="app">
-  <header class="masthead">
-    <div class="eyebrow">Est. 2026</div>
-    <h1>Game Scoreboard</h1>
-    <p class="subtitle">A field record of victories &amp; defeats</p>
-  </header>
+  <header class="masthead">
+    <div class="eyebrow">Est. 2026</div>
+    <h1>Game Scoreboard</h1>
+    <p class="subtitle">A field record of victories &amp; defeats</p>
+  </header>
 
-  <div class="versus" id="versus"></div>
+  <div class="versus" id="versus"></div>
 
-  <div class="addbar">
-    <input id="gameInput" type="text" placeholder="Add a game — Wingspan, Catan, Azul…" maxlength="40">
-    <button class="btn-add" id="addBtn">Add</button>
-  </div>
+  <div class="addbar">
+    <input id="gameInput" type="text" placeholder="Add a game — Wingspan, Catan, Azul…" maxlength="40">
+    <button class="btn-add" id="addBtn">Add</button>
+  </div>
 
-  <p class="section-label">The Games</p>
-  <div id="games"></div>
+  <p class="section-label">The Games</p>
+  <div id="games"></div>
 
-  <div class="history">
-    <p class="section-label">Recent Matches</p>
-    <ul class="log" id="log"></ul>
-  </div>
+  <div class="history">
+    <p class="section-label">Recent Matches</p>
+    <ul class="log" id="log"></ul>
+  </div>
 
-  <footer>
-    <div>Your record is saved automatically on this device.</div>
-    <button class="reset" id="resetBtn">Clear all data</button>
-  </footer>
+  <footer>
+    <div>Your record is saved automatically on this device.</div>
+    <button class="reset" id="resetBtn">Clear all data</button>
+  </footer>
 </div>
 
 <script>
 const KEY='bgtracker:v1';
 
 /* ─────────────────────────────────────────────────────────────
-   SHARED CLOUD SYNC  (optional)
-   Paste your Firebase Realtime Database URL between the quotes
-   below to sync the SAME scoreboard across every device.
-   Example: "https://game-scoreboard-default-rtdb.firebaseio.com"
-   Leave it empty ("") to just save locally on this device.
-   ───────────────────────────────────────────────────────────── */
+   SHARED CLOUD SYNC  (optional)
+   Paste your Firebase Realtime Database URL between the quotes
+   below to sync the SAME scoreboard across every device.
+   Example: "https://game-scoreboard-default-rtdb.firebaseio.com"
+   Leave it empty ("") to just save locally on this device.
+   ───────────────────────────────────────────────────────────── */
 const DB_URL = "https://game-board-score-default-rtdb.firebaseio.com/";
 
 const REMOTE = DB_URL.trim().length > 0;
-const NODE   = DB_URL.trim().replace(/\/+$/,'') + "/tracker.json";
+const NODE   = DB_URL.trim().replace(/\/+$/,'') + "/tracker.json";
 
 let state={ players:{a:'Erika', b:'Matt'}, games:[], matches:[] };
-let editing=false;   // true while a name field is focused, to avoid clobbering
+let editing=false;   // true while a name field is focused, to avoid clobbering
+
+// Firebase drops empty lists, so always restore a complete, safe shape.
+function normalize(d){
+  d = d || {};
+  const p = d.players || {};
+  let games   = d.games;
+  let matches = d.matches;
+  // Firebase may return arrays as objects keyed by index — coerce back to arrays.
+  if(games   && !Array.isArray(games))   games   = Object.values(games);
+  if(matches && !Array.isArray(matches)) matches = Object.values(matches);
+  return {
+    players: { a: p.a || 'Erika', b: p.b || 'Matt' },
+    games:   Array.isArray(games)   ? games.filter(Boolean)   : [],
+    matches: Array.isArray(matches) ? matches.filter(Boolean) : []
+  };
+}
 
 async function load(){
-  // paint instantly from the local copy
-  try{
-    const raw=localStorage.getItem(KEY);
-    if(raw) state=JSON.parse(raw);
-  }catch(e){ /* first run or unreadable */ }
-  render();
+  // paint instantly from the local copy
+  try{
+    const raw=localStorage.getItem(KEY);
+    if(raw) state=normalize(JSON.parse(raw));
+  }catch(e){ /* first run or unreadable */ }
+  render();
 
-  // then sync with the cloud, and keep checking for other devices' changes
-  if(REMOTE){
-    await pull();
-    setInterval(()=>{ if(!editing) pull(); }, 4000);
-    window.addEventListener('focus',()=>{ if(!editing) pull(); });
-  }
+  // then sync with the cloud, and keep checking for other devices' changes
+  if(REMOTE){
+    await pull();
+    setInterval(()=>{ if(!editing) pull(); }, 4000);
+    window.addEventListener('focus',()=>{ if(!editing) pull(); });
+  }
 }
 
 async function pull(){
-  try{
-    const r=await fetch(NODE,{cache:'no-store'});
-    if(!r.ok) return;
-    const data=await r.json();
-    if(data && typeof data==='object'){
-      const incoming=JSON.stringify(data);
-      if(incoming!==JSON.stringify(state)){
-        state=data;
-        try{ localStorage.setItem(KEY, incoming); }catch(e){}
-        render();
-      }
-    }
-  }catch(e){ /* offline — keep using local copy */ }
+  try{
+    const r=await fetch(NODE,{cache:'no-store'});
+    if(!r.ok) return;
+    const data=await r.json();
+    if(data && typeof data==='object'){
+      const norm=normalize(data);
+      const incoming=JSON.stringify(norm);
+      if(incoming!==JSON.stringify(state)){
+        state=norm;
+        try{ localStorage.setItem(KEY, incoming); }catch(e){}
+        render();
+      }
+    }
+  }catch(e){ /* offline — keep using local copy */ }
 }
 
 function save(){
-  try{ localStorage.setItem(KEY, JSON.stringify(state)); }
-  catch(e){ console.error('local save failed',e); }
-  if(REMOTE) push();
+  try{ localStorage.setItem(KEY, JSON.stringify(state)); }
+  catch(e){ console.error('local save failed',e); }
+  if(REMOTE) push();
 }
 
 async function push(){
-  try{
-    await fetch(NODE,{
-      method:'PUT',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify(state)
-    });
-  }catch(e){ console.error('cloud sync failed',e); }
+  try{
+    await fetch(NODE,{
+      method:'PUT',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(state)
+    });
+  }catch(e){ console.error('cloud sync failed',e); }
 }
 
 function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
 
 function statsFor(gameId){
-  let a=0,b=0;
-  for(const m of state.matches){ if(m.gameId===gameId){ m.winner==='a'?a++:b++; } }
-  return {a,b};
+  let a=0,b=0;
+  for(const m of state.matches){ if(m.gameId===gameId){ m.winner==='a'?a++:b++; } }
+  return {a,b};
 }
 function totals(){
-  let a=0,b=0;
-  for(const m of state.matches){ m.winner==='a'?a++:b++; }
-  return {a,b};
+  let a=0,b=0;
+  for(const m of state.matches){ m.winner==='a'?a++:b++; }
+  return {a,b};
 }
 
 function addGame(){
-  const inp=document.getElementById('gameInput');
-  const name=inp.value.trim();
-  if(!name) return;
-  if(state.games.some(g=>g.name.toLowerCase()===name.toLowerCase())){ inp.value=''; return; }
-  state.games.unshift({id:uid(), name});
-  inp.value=''; save(); render();
+  const inp=document.getElementById('gameInput');
+  const name=inp.value.trim();
+  if(!name) return;
+  if(state.games.some(g=>g.name.toLowerCase()===name.toLowerCase())){ inp.value=''; return; }
+  state.games.unshift({id:uid(), name});
+  inp.value=''; save(); render();
 }
 function removeGame(id){
-  state.games=state.games.filter(g=>g.id!==id);
-  state.matches=state.matches.filter(m=>m.gameId!==id);
-  save(); render();
+  state.games=state.games.filter(g=>g.id!==id);
+  state.matches=state.matches.filter(m=>m.gameId!==id);
+  save(); render();
 }
 function recordWin(gameId, winner){
-  state.matches.push({id:uid(), gameId, winner, t:Date.now()});
-  save(); render();
+  state.matches.push({id:uid(), gameId, winner, t:Date.now()});
+  save(); render();
 }
 function undo(matchId){
-  state.matches=state.matches.filter(m=>m.id!==matchId);
-  save(); render();
+  state.matches=state.matches.filter(m=>m.id!==matchId);
+  save(); render();
 }
 function renamePlayer(slot,val){
-  const v=val.trim()||(slot==='a'?'Player A':'Player B');
-  state.players[slot]=v; save();
+  const v=val.trim()||(slot==='a'?'Player A':'Player B');
+  state.players[slot]=v; save();
 }
 
 function fmtDate(t){
-  const d=new Date(t);
-  return d.toLocaleDateString(undefined,{month:'short',day:'numeric'})+
-    ' · '+d.toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'});
+  const d=new Date(t);
+  return d.toLocaleDateString(undefined,{month:'short',day:'numeric'})+
+    ' · '+d.toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'});
 }
 
 function render(){
-  const t=totals();
-  const lead = t.a>t.b?'a':t.b>t.a?'b':null;
+  const t=totals();
+  const lead = t.a>t.b?'a':t.b>t.a?'b':null;
 
-  // versus banner
-  document.getElementById('versus').innerHTML=`
-    <div class="player-card">
-      ${lead==='a'?'<div class="leader-flag">In the Lead</div>':''}
-      <div class="crest"><svg viewBox="0 0 64 64" width="30" height="30" style="display:inline-block;vertical-align:middle;" xmlns="http://www.w3.org/2000/svg"><ellipse cx="25" cy="54" rx="5" ry="2.4" fill="#e8902a"/><ellipse cx="39" cy="54" rx="5" ry="2.4" fill="#e8902a"/><path d="M17 30 C12 34 12 45 16 49 C19 45 19 36 20 31 Z" fill="#23272f"/><path d="M47 30 C52 34 52 45 48 49 C45 45 45 36 44 31 Z" fill="#23272f"/><path d="M32 10 C42 10 48 20 48 33 C48 47 41 54 32 54 C23 54 16 47 16 33 C16 20 22 10 32 10 Z" fill="#2c313a"/><path d="M32 26 C38 26 41 33 41 40 C41 48 37 51 32 51 C27 51 23 48 23 40 C23 33 26 26 32 26 Z" fill="#f4efe2"/><circle cx="27.5" cy="21" r="3" fill="#ffffff"/><circle cx="36.5" cy="21" r="3" fill="#ffffff"/><circle cx="28" cy="21.5" r="1.5" fill="#20242b"/><circle cx="36" cy="21.5" r="1.5" fill="#20242b"/><path d="M29 25 L35 25 L32 30 Z" fill="#f4a72c"/></svg></div>
-      <input class="player-name" data-slot="a" value="${escapeAttr(state.players.a)}">
-      <div class="player-tally">${t.a}<small>wins</small></div>
-    </div>
-    <div class="vs-mark">versus</div>
-    <div class="player-card">
-      ${lead==='b'?'<div class="leader-flag">In the Lead</div>':''}
-      <div class="crest"><svg viewBox="0 0 64 64" width="30" height="30" style="display:inline-block;vertical-align:middle;" xmlns="http://www.w3.org/2000/svg"><path d="M6 31 L21 28 L19 39 Z" fill="#2f5f96"/><ellipse cx="34" cy="33" rx="13.5" ry="13" fill="#4a90d9"/><ellipse cx="37" cy="36" rx="8" ry="6" fill="#cfe6f7"/><path d="M27 27 C35 24 42 28 45 34 C38 37 30 33 26 28 Z" fill="#356fab"/><circle cx="42" cy="29" r="2.2" fill="#16324f"/><path d="M47 31 L56 33 L47 35 Z" fill="#f4a72c"/></svg></div>
-      <input class="player-name" data-slot="b" value="${escapeAttr(state.players.b)}">
-      <div class="player-tally">${t.b}<small>wins</small></div>
-    </div>`;
-  document.querySelectorAll('.player-name').forEach(el=>{
-    el.addEventListener('focus',()=>{ editing=true; });
-    el.addEventListener('change',e=>{ renamePlayer(e.target.dataset.slot,e.target.value); render(); });
-    el.addEventListener('blur',()=>{ editing=false; });
-    el.addEventListener('keydown',e=>{ if(e.key==='Enter') e.target.blur(); });
-  });
+  // versus banner
+  document.getElementById('versus').innerHTML=`
+    <div class="player-card">
+      ${lead==='a'?'<div class="leader-flag">In the Lead</div>':''}
+      <div class="crest"><svg viewBox="0 0 64 64" width="30" height="30" style="display:inline-block;vertical-align:middle;" xmlns="http://www.w3.org/2000/svg"><ellipse cx="25" cy="54" rx="5" ry="2.4" fill="#e8902a"/><ellipse cx="39" cy="54" rx="5" ry="2.4" fill="#e8902a"/><path d="M17 30 C12 34 12 45 16 49 C19 45 19 36 20 31 Z" fill="#23272f"/><path d="M47 30 C52 34 52 45 48 49 C45 45 45 36 44 31 Z" fill="#23272f"/><path d="M32 10 C42 10 48 20 48 33 C48 47 41 54 32 54 C23 54 16 47 16 33 C16 20 22 10 32 10 Z" fill="#2c313a"/><path d="M32 26 C38 26 41 33 41 40 C41 48 37 51 32 51 C27 51 23 48 23 40 C23 33 26 26 32 26 Z" fill="#f4efe2"/><circle cx="27.5" cy="21" r="3" fill="#ffffff"/><circle cx="36.5" cy="21" r="3" fill="#ffffff"/><circle cx="28" cy="21.5" r="1.5" fill="#20242b"/><circle cx="36" cy="21.5" r="1.5" fill="#20242b"/><path d="M29 25 L35 25 L32 30 Z" fill="#f4a72c"/></svg></div>
+      <input class="player-name" data-slot="a" value="${escapeAttr(state.players.a)}">
+      <div class="player-tally">${t.a}<small>wins</small></div>
+    </div>
+    <div class="vs-mark">versus</div>
+    <div class="player-card">
+      ${lead==='b'?'<div class="leader-flag">In the Lead</div>':''}
+      <div class="crest"><svg viewBox="0 0 64 64" width="30" height="30" style="display:inline-block;vertical-align:middle;" xmlns="http://www.w3.org/2000/svg"><path d="M6 31 L21 28 L19 39 Z" fill="#2f5f96"/><ellipse cx="34" cy="33" rx="13.5" ry="13" fill="#4a90d9"/><ellipse cx="37" cy="36" rx="8" ry="6" fill="#cfe6f7"/><path d="M27 27 C35 24 42 28 45 34 C38 37 30 33 26 28 Z" fill="#356fab"/><circle cx="42" cy="29" r="2.2" fill="#16324f"/><path d="M47 31 L56 33 L47 35 Z" fill="#f4a72c"/></svg></div>
+      <input class="player-name" data-slot="b" value="${escapeAttr(state.players.b)}">
+      <div class="player-tally">${t.b}<small>wins</small></div>
+    </div>`;
+  document.querySelectorAll('.player-name').forEach(el=>{
+    el.addEventListener('focus',()=>{ editing=true; });
+    el.addEventListener('change',e=>{ renamePlayer(e.target.dataset.slot,e.target.value); render(); });
+    el.addEventListener('blur',()=>{ editing=false; });
+    el.addEventListener('keydown',e=>{ if(e.key==='Enter') e.target.blur(); });
+  });
 
-  // games
-  const gc=document.getElementById('games');
-  if(state.games.length===0){
-    gc.innerHTML=`<div class="empty">No games yet. Add your first above — try <em>Wingspan</em>.</div>`;
-  }else{
-    gc.innerHTML=state.games.map(g=>{
-      const s=statsFor(g.id); const tot=s.a+s.b;
-      const pa = tot? (s.a/tot*100):50;
-      const pb = tot? (s.b/tot*100):50;
-      return `
-      <div class="game">
-        <div class="game-top">
-          <span class="game-name">${escapeHtml(g.name)}</span>
-          <span class="game-total">${tot} ${tot===1?'match':'matches'} played
-            <button class="del" data-del="${g.id}" title="Remove game">×</button></span>
-        </div>
-        <div class="bar"><div class="a" style="width:${pa}%"></div><div class="b" style="width:${pb}%"></div></div>
-        <div class="winbtns">
-          <button class="winbtn a" data-win="${g.id}" data-slot="a">
-            <span class="lbl">${escapeHtml(state.players.a)} won</span><span class="score">${s.a}</span></button>
-          <button class="winbtn b" data-win="${g.id}" data-slot="b">
-            <span class="lbl">${escapeHtml(state.players.b)} won</span><span class="score">${s.b}</span></button>
-        </div>
-      </div>`;
-    }).join('');
-    gc.querySelectorAll('[data-win]').forEach(b=>b.addEventListener('click',()=>recordWin(b.dataset.win,b.dataset.slot)));
-    gc.querySelectorAll('[data-del]').forEach(b=>b.addEventListener('click',()=>{
-      if(confirm('Remove this game and its match history?')) removeGame(b.dataset.del);
-    }));
-  }
+  // games
+  const gc=document.getElementById('games');
+  if(state.games.length===0){
+    gc.innerHTML=`<div class="empty">No games yet. Add your first above — try <em>Wingspan</em>.</div>`;
+  }else{
+    gc.innerHTML=state.games.map(g=>{
+      const s=statsFor(g.id); const tot=s.a+s.b;
+      const pa = tot? (s.a/tot*100):50;
+      const pb = tot? (s.b/tot*100):50;
+      return `
+      <div class="game">
+        <div class="game-top">
+          <span class="game-name">${escapeHtml(g.name)}</span>
+          <span class="game-total">${tot} ${tot===1?'match':'matches'} played
+            <button class="del" data-del="${g.id}" title="Remove game">×</button></span>
+        </div>
+        <div class="bar"><div class="a" style="width:${pa}%"></div><div class="b" style="width:${pb}%"></div></div>
+        <div class="winbtns">
+          <button class="winbtn a" data-win="${g.id}" data-slot="a">
+            <span class="lbl">${escapeHtml(state.players.a)} won</span><span class="score">${s.a}</span></button>
+          <button class="winbtn b" data-win="${g.id}" data-slot="b">
+            <span class="lbl">${escapeHtml(state.players.b)} won</span><span class="score">${s.b}</span></button>
+        </div>
+      </div>`;
+    }).join('');
+    gc.querySelectorAll('[data-win]').forEach(b=>b.addEventListener('click',()=>recordWin(b.dataset.win,b.dataset.slot)));
+    gc.querySelectorAll('[data-del]').forEach(b=>b.addEventListener('click',()=>{
+      if(confirm('Remove this game and its match history?')) removeGame(b.dataset.del);
+    }));
+  }
 
-  // history (latest 12)
-  const log=document.getElementById('log');
-  const recent=[...state.matches].sort((x,y)=>y.t-x.t).slice(0,12);
-  if(recent.length===0){
-    log.innerHTML=`<li><span class="meta">No matches recorded yet.</span></li>`;
-  }else{
-    log.innerHTML=recent.map(m=>{
-      const g=state.games.find(x=>x.id===m.gameId);
-      const name=state.players[m.winner];
-      return `<li>
-        <span><span class="who">${escapeHtml(name)}</span> won ${g?'at '+escapeHtml(g.name):''}</span>
-        <span><span class="meta">${fmtDate(m.t)}</span>
-        &nbsp;<button class="undo" data-undo="${m.id}">undo</button></span>
-      </li>`;
-    }).join('');
-    log.querySelectorAll('[data-undo]').forEach(b=>b.addEventListener('click',()=>undo(b.dataset.undo)));
-  }
+  // history (latest 12)
+  const log=document.getElementById('log');
+  const recent=[...state.matches].sort((x,y)=>y.t-x.t).slice(0,12);
+  if(recent.length===0){
+    log.innerHTML=`<li><span class="meta">No matches recorded yet.</span></li>`;
+  }else{
+    log.innerHTML=recent.map(m=>{
+      const g=state.games.find(x=>x.id===m.gameId);
+      const name=state.players[m.winner];
+      return `<li>
+        <span><span class="who">${escapeHtml(name)}</span> won ${g?'at '+escapeHtml(g.name):''}</span>
+        <span><span class="meta">${fmtDate(m.t)}</span>
+        &nbsp;<button class="undo" data-undo="${m.id}">undo</button></span>
+      </li>`;
+    }).join('');
+    log.querySelectorAll('[data-undo]').forEach(b=>b.addEventListener('click',()=>undo(b.dataset.undo)));
+  }
 }
 
 function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
@@ -371,10 +388,10 @@ function escapeAttr(s){return escapeHtml(s);}
 document.getElementById('addBtn').addEventListener('click',addGame);
 document.getElementById('gameInput').addEventListener('keydown',e=>{if(e.key==='Enter')addGame();});
 document.getElementById('resetBtn').addEventListener('click',function(){
-  if(!confirm('Erase all games, matches, and reset names? This cannot be undone.')) return;
-  state={players:{a:'Erika',b:'Matt'},games:[],matches:[]};
-  try{ localStorage.removeItem(KEY); }catch(e){}
-  save(); render();
+  if(!confirm('Erase all games, matches, and reset names? This cannot be undone.')) return;
+  state={players:{a:'Erika',b:'Matt'},games:[],matches:[]};
+  try{ localStorage.removeItem(KEY); }catch(e){}
+  save(); render();
 });
 
 load();
